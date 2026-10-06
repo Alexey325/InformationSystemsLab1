@@ -3,10 +3,12 @@ package com.example.informationsystemslab1.service;
 import com.example.informationsystemslab1.dto.CreateLabWorkDto;
 import com.example.informationsystemslab1.dto.UpdateLabWorkDto;
 import com.example.informationsystemslab1.entity.Coordinates;
+import com.example.informationsystemslab1.entity.Discipline;
 import com.example.informationsystemslab1.entity.LabWork;
 import com.example.informationsystemslab1.repository.LabWorkRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -17,11 +19,20 @@ import java.util.Optional;
 public class LabWorkService {
 
     private final LabWorkRepository labWorkRepository;
+    private final DisciplineService disciplineService;
+    private final PersonService personService;
 
-    public LabWorkService(LabWorkRepository labWorkRepository) {
+    public LabWorkService(
+            LabWorkRepository labWorkRepository,
+            DisciplineService disciplineService,
+            PersonService personService
+    ) {
         this.labWorkRepository = labWorkRepository;
+        this.disciplineService = disciplineService;
+        this.personService = personService;
     }
 
+    @Transactional
     public LabWork create(CreateLabWorkDto dto) {
         Coordinates coordinates = new Coordinates();
         coordinates.setX(dto.coordinates().x());
@@ -35,8 +46,12 @@ public class LabWorkService {
         labWork.setMinimalPoint(dto.minimalPoint());
         labWork.setPersonalQualitiesMaximum(dto.personalQualitiesMaximum());
         labWork.setTunedInWork(dto.tunedInWork());
-        labWork.setDiscipline_id(dto.disciplineId());
-        labWork.setPerson_id(dto.personId());
+
+        Discipline discipline = disciplineService.findById(dto.disciplineId());
+        discipline.setLabsCount(discipline.getLabsCount() + 1);
+
+        labWork.setDiscipline(discipline);
+        labWork.setAuthors(personService.findAllByIds(dto.authorsIds()));
         labWork.setCreationDate(LocalDate.now());
 
         return labWorkRepository.save(labWork);
@@ -57,6 +72,7 @@ public class LabWorkService {
 
     }
 
+    @Transactional
     public LabWork update(Long labWorkId, UpdateLabWorkDto dto) {
         LabWork labWork = findById(labWorkId);
 
@@ -69,20 +85,28 @@ public class LabWorkService {
         labWork.setMinimalPoint(dto.minimalPoint());
         labWork.setPersonalQualitiesMaximum(dto.personalQualitiesMaximum());
         labWork.setTunedInWork(dto.tunedInWork());
-        labWork.setDiscipline_id(dto.disciplineId());
-        labWork.setPerson_id(dto.personId());
+
+        Discipline oldDiscipline = labWork.getDiscipline();
+        Discipline newDiscipline = disciplineService.findById(dto.disciplineId());
+
+        if (!oldDiscipline.getId().equals(newDiscipline.getId())) {
+            oldDiscipline.setLabsCount(oldDiscipline.getLabsCount() - 1);
+            newDiscipline.setLabsCount(newDiscipline.getLabsCount() + 1);
+        }
+
+        labWork.setDiscipline(newDiscipline);
+        labWork.setAuthors(personService.findAllByIds(dto.authorsIds()));
 
         return labWorkRepository.save(labWork);
     }
 
-
+    @Transactional
     public void delete(Long id) {
-        if (!labWorkRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "LabWork with id " + id + " not found");
-        }
+        LabWork labWork = findById(id);
+        Discipline discipline = labWork.getDiscipline();
+        discipline.setLabsCount(discipline.getLabsCount() - 1);
 
-        labWorkRepository.deleteById(id);
+        labWorkRepository.delete(labWork);
     }
-
 
 }

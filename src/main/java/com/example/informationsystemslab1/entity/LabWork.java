@@ -1,6 +1,7 @@
 package com.example.informationsystemslab1.entity;
 
 import com.example.informationsystemslab1.entity.enums.Difficulty;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -38,8 +41,12 @@ public class LabWork {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    @Column
-    private Long discipline_id;
+    // LAZY не работает без EclipseLink weaving — фактически всегда EAGER (см. STUDY_NOTES.md)
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "discipline_id", nullable = false)
+    @JsonManagedReference("discipline-labworks")
+    private Discipline discipline;
 
     @Positive
     @Column(nullable = false)
@@ -53,7 +60,13 @@ public class LabWork {
     @Column(nullable = false)
     private int tunedInWork;
 
-    @Column
-    private Long person_id;
+    @ManyToMany
+    @JoinTable(
+            name = "labWork_person",
+            joinColumns = @JoinColumn(name = "labWork_id"),
+            inverseJoinColumns = @JoinColumn(name = "person_id")
+    )
+    @JsonManagedReference("labwork-authors")
+    private Set<Person> authors = new HashSet<>();
 
 }

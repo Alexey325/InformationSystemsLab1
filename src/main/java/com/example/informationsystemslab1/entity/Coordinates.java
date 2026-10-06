@@ -3,7 +3,11 @@ package com.example.informationsystemslab1.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Embeddable
 public class Coordinates {
 
@@ -13,9 +17,4 @@ public class Coordinates {
     @NotNull
     @Column(nullable = false)
     private Integer y;
-
-    public float getX() { return x; }
-    public void setX(float x) { this.x = x; }
-    public Integer getY() { return y; }
-    public void setY(Integer y) { this.y = y; }
 }
