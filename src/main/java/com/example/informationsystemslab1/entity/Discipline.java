@@ -1,6 +1,5 @@
 package com.example.informationsystemslab1.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
@@ -25,6 +24,5 @@ public class Discipline {
     private int labsCount;
 
     @OneToMany(mappedBy = "discipline")
-    @JsonBackReference("discipline-labworks")
     private List<LabWork> labWorks;
 }

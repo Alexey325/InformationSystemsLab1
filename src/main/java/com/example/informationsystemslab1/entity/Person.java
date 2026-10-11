@@ -2,8 +2,6 @@ package com.example.informationsystemslab1.entity;
 
 import com.example.informationsystemslab1.enums.Color;
 import com.example.informationsystemslab1.enums.Country;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -37,7 +35,6 @@ public class Person {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id", nullable = false)
-    @JsonManagedReference("location-people")
     private Location location;
 
     @NotBlank
@@ -51,6 +48,5 @@ public class Person {
     private Country nationality;
 
     @ManyToMany(mappedBy = "authors")
-    @JsonBackReference("labwork-authors")
     private Set<LabWork> labWorks = new HashSet<>();
 }

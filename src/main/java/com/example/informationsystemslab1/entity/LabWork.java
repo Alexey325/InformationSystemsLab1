@@ -1,7 +1,6 @@
 package com.example.informationsystemslab1.entity;
 
 import com.example.informationsystemslab1.enums.Difficulty;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -45,7 +44,6 @@ public class LabWork {
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discipline_id", nullable = false)
-    @JsonManagedReference("discipline-labworks")
     private Discipline discipline;
 
     @Positive
@@ -66,7 +64,6 @@ public class LabWork {
             joinColumns = @JoinColumn(name = "labWork_id"),
             inverseJoinColumns = @JoinColumn(name = "person_id")
     )
-    @JsonManagedReference("labwork-authors")
     private Set<Person> authors = new HashSet<>();
 
 }

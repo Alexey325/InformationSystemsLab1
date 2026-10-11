@@ -1,6 +1,5 @@
 package com.example.informationsystemslab1.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -35,7 +34,6 @@ public class Location {
     private String name;
 
     @OneToMany(mappedBy = "location")
-    @JsonBackReference("location-people")
     private List<Person> people;
 
 
