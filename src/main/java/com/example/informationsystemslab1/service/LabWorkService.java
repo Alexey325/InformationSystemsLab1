@@ -52,7 +52,7 @@ public class LabWorkService {
         labWork.setPersonalQualitiesMaximum(dto.personalQualitiesMaximum());
         labWork.setTunedInWork(dto.tunedInWork());
 
-        Discipline discipline = disciplineService.findById(dto.disciplineId());
+        Discipline discipline = disciplineService.getEntityById(dto.disciplineId());
         discipline.setLabsCount(discipline.getLabsCount() + 1);
 
         labWork.setDiscipline(discipline);
@@ -76,7 +76,7 @@ public class LabWorkService {
         Optional<LabWork> optionalLabWork = labWorkRepository.findById(id);
 
         if (optionalLabWork.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "LabWork with id " + id + " not found");
         }
 
         return optionalLabWork.get();
@@ -97,7 +97,7 @@ public class LabWorkService {
         labWork.setTunedInWork(dto.tunedInWork());
 
         Discipline oldDiscipline = labWork.getDiscipline();
-        Discipline newDiscipline = disciplineService.findById(dto.disciplineId());
+        Discipline newDiscipline = disciplineService.getEntityById(dto.disciplineId());
 
         if (!oldDiscipline.getId().equals(newDiscipline.getId())) {
             oldDiscipline.setLabsCount(oldDiscipline.getLabsCount() - 1);

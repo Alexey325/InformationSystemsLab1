@@ -3,7 +3,7 @@ package com.example.informationsystemslab1.dto.response;
 import com.example.informationsystemslab1.dto.CoordinatesDto;
 import com.example.informationsystemslab1.dto.ref.DisciplineRefDto;
 import com.example.informationsystemslab1.dto.ref.PersonRefDto;
-import com.example.informationsystemslab1.entity.enums.Difficulty;
+import com.example.informationsystemslab1.enums.Difficulty;
 
 import java.time.LocalDate;
 import java.util.Set;

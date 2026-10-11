@@ -1,7 +1,7 @@
 package com.example.informationsystemslab1.dto.request;
 
 import com.example.informationsystemslab1.dto.CoordinatesDto;
-import com.example.informationsystemslab1.entity.enums.Difficulty;
+import com.example.informationsystemslab1.enums.Difficulty;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

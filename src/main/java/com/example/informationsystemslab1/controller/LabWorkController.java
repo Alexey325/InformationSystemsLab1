@@ -33,7 +33,6 @@ public class LabWorkController {
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<LabWorkResponseDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(labWorkService.findById(id));
     }
@@ -43,7 +42,6 @@ public class LabWorkController {
         LabWorkResponseDto updated = labWorkService.update(id, dto);
         return ResponseEntity.ok(updated);
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {

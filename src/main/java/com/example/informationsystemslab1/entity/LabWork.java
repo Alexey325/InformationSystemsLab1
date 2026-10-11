@@ -1,6 +1,6 @@
 package com.example.informationsystemslab1.entity;
 
-import com.example.informationsystemslab1.entity.enums.Difficulty;
+import com.example.informationsystemslab1.enums.Difficulty;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -41,7 +41,7 @@ public class LabWork {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    // LAZY не работает без EclipseLink weaving — фактически всегда EAGER (см. STUDY_NOTES.md)
+    // LAZY не работает без EclipseLink weaving
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discipline_id", nullable = false)

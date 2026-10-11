@@ -1,4 +1,4 @@
-package com.example.informationsystemslab1.entity.enums;
+package com.example.informationsystemslab1.enums;
 
 public enum Country {
     RUSSIA,

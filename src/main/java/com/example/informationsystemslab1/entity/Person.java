@@ -1,7 +1,7 @@
 package com.example.informationsystemslab1.entity;
 
-import com.example.informationsystemslab1.entity.enums.Color;
-import com.example.informationsystemslab1.entity.enums.Country;
+import com.example.informationsystemslab1.enums.Color;
+import com.example.informationsystemslab1.enums.Country;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -33,7 +33,7 @@ public class Person {
     @Enumerated(EnumType.STRING)
     private Color hairColor;
 
-    // LAZY не работает без EclipseLink weaving — фактически всегда EAGER (см. STUDY_NOTES.md)
+    // LAZY не работает без EclipseLink weaving
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id", nullable = false)
