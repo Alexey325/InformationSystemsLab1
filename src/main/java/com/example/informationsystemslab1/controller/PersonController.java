@@ -1,6 +1,6 @@
 package com.example.informationsystemslab1.controller;
 
-import com.example.informationsystemslab1.dto.CreatePersonDto;
+import com.example.informationsystemslab1.dto.request.CreatePersonDto;
 import com.example.informationsystemslab1.entity.Person;
 import com.example.informationsystemslab1.service.PersonService;
 import jakarta.validation.Valid;

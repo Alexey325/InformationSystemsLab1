@@ -1,8 +1,8 @@
 package com.example.informationsystemslab1.controller;
 
-import com.example.informationsystemslab1.dto.CreateLabWorkDto;
-import com.example.informationsystemslab1.dto.UpdateLabWorkDto;
-import com.example.informationsystemslab1.entity.LabWork;
+import com.example.informationsystemslab1.dto.request.CreateLabWorkDto;
+import com.example.informationsystemslab1.dto.request.UpdateLabWorkDto;
+import com.example.informationsystemslab1.dto.response.LabWorkResponseDto;
 import com.example.informationsystemslab1.service.LabWorkService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -22,28 +22,26 @@ public class LabWorkController {
     }
 
     @PostMapping
-    public ResponseEntity<LabWork> create(@Valid @RequestBody CreateLabWorkDto dto) {
-        LabWork createdLabWork = labWorkService.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdLabWork);
+    public ResponseEntity<LabWorkResponseDto> create(@Valid @RequestBody CreateLabWorkDto dto) {
+        LabWorkResponseDto created = labWorkService.create(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     @GetMapping
-    public ResponseEntity<List<LabWork>> getAllLabWorks() {
-        List<LabWork> labWorks = labWorkService.findAll();
-        return ResponseEntity.ok(labWorks);
+    public ResponseEntity<List<LabWorkResponseDto>> getAllLabWorks() {
+        return ResponseEntity.ok(labWorkService.findAll());
     }
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<LabWork> getById(@PathVariable Long id) {
-        LabWork labWork = labWorkService.findById(id);
-        return ResponseEntity.ok(labWork);
+    public ResponseEntity<LabWorkResponseDto> getById(@PathVariable Long id) {
+        return ResponseEntity.ok(labWorkService.findById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LabWork> update(@PathVariable Long id, @Valid @RequestBody UpdateLabWorkDto dto) {
-        LabWork updatedLabWork =  this.labWorkService.update(id, dto);
-        return ResponseEntity.ok(updatedLabWork);
+    public ResponseEntity<LabWorkResponseDto> update(@PathVariable Long id, @Valid @RequestBody UpdateLabWorkDto dto) {
+        LabWorkResponseDto updated = labWorkService.update(id, dto);
+        return ResponseEntity.ok(updated);
     }
 
 

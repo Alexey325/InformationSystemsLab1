@@ -1,6 +1,6 @@
 package com.example.informationsystemslab1.service;
 
-import com.example.informationsystemslab1.dto.CreateDisciplineDto;
+import com.example.informationsystemslab1.dto.request.CreateDisciplineDto;
 import com.example.informationsystemslab1.entity.Discipline;
 import com.example.informationsystemslab1.repository.DisciplineRepository;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package com.example.informationsystemslab1.service;
 
-import com.example.informationsystemslab1.dto.CreateLocationDto;
+import com.example.informationsystemslab1.dto.request.CreateLocationDto;
 import com.example.informationsystemslab1.entity.Location;
 import com.example.informationsystemslab1.repository.LocationRepository;
 import org.springframework.stereotype.Service;

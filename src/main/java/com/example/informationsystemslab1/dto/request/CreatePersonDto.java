@@ -1,4 +1,4 @@
-package com.example.informationsystemslab1.dto;
+package com.example.informationsystemslab1.dto.request;
 
 import com.example.informationsystemslab1.entity.enums.Color;
 import com.example.informationsystemslab1.entity.enums.Country;

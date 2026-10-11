@@ -1,6 +1,6 @@
 package com.example.informationsystemslab1.controller;
 
-import com.example.informationsystemslab1.dto.CreateDisciplineDto;
+import com.example.informationsystemslab1.dto.request.CreateDisciplineDto;
 import com.example.informationsystemslab1.entity.Discipline;
 import com.example.informationsystemslab1.service.DisciplineService;
 import jakarta.validation.Valid;

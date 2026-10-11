@@ -1,6 +1,6 @@
 package com.example.informationsystemslab1.service;
 
-import com.example.informationsystemslab1.dto.CreatePersonDto;
+import com.example.informationsystemslab1.dto.request.CreatePersonDto;
 import com.example.informationsystemslab1.entity.Location;
 import com.example.informationsystemslab1.entity.Person;
 import com.example.informationsystemslab1.repository.LocationRepository;
