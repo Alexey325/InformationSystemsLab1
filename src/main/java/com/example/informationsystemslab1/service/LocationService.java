@@ -3,7 +3,11 @@ package com.example.informationsystemslab1.service;
 import com.example.informationsystemslab1.dto.request.CreateLocationDto;
 import com.example.informationsystemslab1.entity.Location;
 import com.example.informationsystemslab1.repository.LocationRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @Service
 public class LocationService {
@@ -22,5 +26,15 @@ public class LocationService {
         location.setName(dto.name());
 
         return locationRepository.save(location);
+    }
+
+    public Location getEntityById(Long id) {
+        Optional<Location> optionalLocation = locationRepository.findById(id);
+
+        if (optionalLocation.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Location with id " + id + " not found");
+        }
+
+        return optionalLocation.get();
     }
 }
