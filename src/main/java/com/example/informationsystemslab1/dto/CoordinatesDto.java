@@ -4,6 +4,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record CoordinatesDto(
         float x,
-        @NotNull Integer y
+        @NotNull Double y
 ) {
 }

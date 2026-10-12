@@ -4,9 +4,11 @@ import com.example.informationsystemslab1.dto.request.create.CreateDisciplineDto
 import com.example.informationsystemslab1.dto.request.update.UpdateDisciplineDto;
 import com.example.informationsystemslab1.dto.response.DisciplineResponseDto;
 import com.example.informationsystemslab1.entity.Discipline;
+import com.example.informationsystemslab1.exception.custom.EntityInUseException;
 import com.example.informationsystemslab1.exception.custom.EntityNotFoundException;
 import com.example.informationsystemslab1.mapper.DisciplineMapper;
 import com.example.informationsystemslab1.repository.DisciplineRepository;
+import com.example.informationsystemslab1.repository.LabWorkRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,10 +18,12 @@ import java.util.Optional;
 public class DisciplineService {
 
     private final DisciplineRepository disciplineRepository;
+    private final LabWorkRepository labWorkRepository;
     private final DisciplineMapper disciplineMapper;
 
-    public DisciplineService(DisciplineRepository disciplineRepository, DisciplineMapper disciplineMapper) {
+    public DisciplineService(DisciplineRepository disciplineRepository, LabWorkRepository labWorkRepository, DisciplineMapper disciplineMapper) {
         this.disciplineRepository = disciplineRepository;
+        this.labWorkRepository = labWorkRepository;
         this.disciplineMapper = disciplineMapper;
     }
 
@@ -62,6 +66,11 @@ public class DisciplineService {
     public void delete(Long id) {
         if (!disciplineRepository.existsById(id)) {
             throw new EntityNotFoundException(Discipline.class, id);
+        }
+
+        // discipline у LabWork @NotNull — удалить дисциплину, на которую ещё ссылаются LabWork, нельзя
+        if (labWorkRepository.existsByDisciplineId(id)) {
+            throw new EntityInUseException(Discipline.class, id);
         }
 
         disciplineRepository.deleteById(id);

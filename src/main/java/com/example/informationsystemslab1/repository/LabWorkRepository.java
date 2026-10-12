@@ -35,4 +35,8 @@ public interface LabWorkRepository extends JpaRepository<LabWork, Long> {
     List<Object[]> countGroupedByNameRaw();
 
     List<LabWork> findByMinimalPointGreaterThan(int minimalPoint);
+
+    // метод нужен для решения проблемы с удалением сущности, когда на нее присутствует внешняя ссылка not null,
+    // вызывается DisciplineService, что не хорошо, но решает проблему циклического DI между DisciplineService и LabWorkService
+    boolean existsByDisciplineId(Long disciplineId);
 }

@@ -1,5 +1,6 @@
 package com.example.informationsystemslab1.exception.handler;
 
+import com.example.informationsystemslab1.exception.custom.EntityInUseException;
 import com.example.informationsystemslab1.exception.custom.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
@@ -37,6 +38,13 @@ public class GlobalExceptionHandler {
                 .toList();
 
         return buildValidationProblemDetail(violations);
+    }
+
+    @ExceptionHandler(EntityInUseException.class)
+    public ProblemDetail handleEntityInUse(EntityInUseException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problemDetail.setTitle("Entity still referenced");
+        return problemDetail;
     }
 
     //для ошибок с кривыми запросами pageble

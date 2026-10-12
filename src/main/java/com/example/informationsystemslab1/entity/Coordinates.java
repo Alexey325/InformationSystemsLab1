@@ -16,5 +16,5 @@ public class Coordinates {
 
     @NotNull
     @Column(nullable = false)
-    private Integer y;
+    private Double y;
 }
