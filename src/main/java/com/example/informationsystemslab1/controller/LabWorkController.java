@@ -3,6 +3,7 @@ package com.example.informationsystemslab1.controller;
 import com.example.informationsystemslab1.dto.request.create.CreateLabWorkDto;
 import com.example.informationsystemslab1.dto.request.update.UpdateLabWorkDto;
 import com.example.informationsystemslab1.dto.response.LabWorkResponseDto;
+import com.example.informationsystemslab1.dto.response.operations.NameCountDto;
 import com.example.informationsystemslab1.service.LabWorkService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/labworks")
@@ -60,6 +63,21 @@ public class LabWorkController {
     public ResponseEntity<LabWorkResponseDto> getMaxedByTunedInWork() {
         LabWorkResponseDto maxedByTunedInWork = labWorkService.findMaxedByTunedInWork();
         return ResponseEntity.ok(maxedByTunedInWork);
+    }
+
+    @GetMapping("/grouped-by-name")
+    public ResponseEntity<List<NameCountDto>> getGroupedByName() {
+        return ResponseEntity.ok(labWorkService.countGroupedByName());
+    }
+
+    @GetMapping("/minimal-point-greater-than")
+    public ResponseEntity<List<LabWorkResponseDto>> getByMinimalPointGreaterThan(@RequestParam int minimalPoint) {
+        return ResponseEntity.ok(labWorkService.findByMinimalPointGreaterThan(minimalPoint));
+    }
+
+    @PostMapping("/add-hardest-to-discipline")
+    public ResponseEntity<List<LabWorkResponseDto>> addHardestToDiscipline(@RequestParam Long disciplineId) {
+        return ResponseEntity.ok(labWorkService.addHardestToDiscipline(disciplineId));
     }
 
 }

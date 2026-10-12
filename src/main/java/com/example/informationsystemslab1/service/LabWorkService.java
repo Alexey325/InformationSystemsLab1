@@ -3,6 +3,7 @@ package com.example.informationsystemslab1.service;
 import com.example.informationsystemslab1.dto.request.create.CreateLabWorkDto;
 import com.example.informationsystemslab1.dto.request.update.UpdateLabWorkDto;
 import com.example.informationsystemslab1.dto.response.LabWorkResponseDto;
+import com.example.informationsystemslab1.dto.response.operations.NameCountDto;
 import com.example.informationsystemslab1.entity.Coordinates;
 import com.example.informationsystemslab1.entity.Discipline;
 import com.example.informationsystemslab1.entity.LabWork;
@@ -15,11 +16,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class LabWorkService {
+
+    private static final int HARDEST_COUNT = 3;
 
     private final LabWorkRepository labWorkRepository;
     private final DisciplineService disciplineService;
@@ -60,7 +64,7 @@ public class LabWorkService {
         labWork.setAuthors(personService.findAllByIds(dto.authorsIds()));
         labWork.setCreationDate(LocalDate.now());
 
-        return labWorkMapper.toDto(labWorkRepository.save(labWork));
+        return labWorkMapper.toDto(labWorkRepository.saveAndFlush(labWork));
     }
 
     public Page<LabWorkResponseDto> findAll(String name, String description, Pageable pageable) {
@@ -130,5 +134,40 @@ public class LabWorkService {
         }
 
         return labWorkMapper.toDto(optionalMaxedByTunedInWork.get());
+    }
+
+    public List<NameCountDto> countGroupedByName() {
+        return labWorkRepository.countGroupedByNameRaw().stream()
+                .map(row -> new NameCountDto((String) row[0], (Long) row[1]))
+                .toList();
+    }
+
+    public List<LabWorkResponseDto> findByMinimalPointGreaterThan(int minimalPoint) {
+        return labWorkRepository.findByMinimalPointGreaterThan(minimalPoint).stream()
+                .map(labWorkMapper::toDto)
+                .toList();
+    }
+
+    @Transactional
+    public List<LabWorkResponseDto> addHardestToDiscipline(Long disciplineId) {
+        Discipline targetDiscipline = disciplineService.getEntityById(disciplineId);
+
+        List<LabWork> hardest = labWorkRepository.findAll().stream()
+                .filter(l -> l.getDifficulty() != null)
+                .filter(l -> !l.getDiscipline().getId().equals(disciplineId))
+                .sorted(Comparator.comparing((LabWork l) -> l.getDifficulty().getWeight()).reversed())
+                .limit(HARDEST_COUNT)
+                .toList();
+
+        for (LabWork labWork : hardest) {
+            Discipline oldDiscipline = labWork.getDiscipline();
+            oldDiscipline.setLabsCount(oldDiscipline.getLabsCount() - 1);
+            targetDiscipline.setLabsCount(targetDiscipline.getLabsCount() + 1);
+            labWork.setDiscipline(targetDiscipline);
+        }
+
+        return labWorkRepository.saveAll(hardest).stream()
+                .map(labWorkMapper::toDto)
+                .toList();
     }
 }

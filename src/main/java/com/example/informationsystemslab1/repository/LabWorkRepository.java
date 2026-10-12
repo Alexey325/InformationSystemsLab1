@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -25,5 +26,13 @@ public interface LabWorkRepository extends JpaRepository<LabWork, Long> {
     )
     Page<LabWork> findAllFiltered(@Param("name") String name, @Param("description") String description, Pageable pageable);
 
+
+    //специальные операции
+
     Optional<LabWork> findFirstByOrderByTunedInWorkDesc();
+
+    @Query("SELECT l.name, COUNT(l) FROM LabWork l GROUP BY l.name")
+    List<Object[]> countGroupedByNameRaw();
+
+    List<LabWork> findByMinimalPointGreaterThan(int minimalPoint);
 }
