@@ -53,4 +53,13 @@ public class LabWorkController {
         return ResponseEntity.noContent().build();
     }
 
+
+    //обработка специальных операций
+
+    @GetMapping("/max-tuned-in-work")
+    public ResponseEntity<LabWorkResponseDto> getMaxedByTunedInWork() {
+        LabWorkResponseDto maxedByTunedInWork = labWorkService.findMaxedByTunedInWork();
+        return ResponseEntity.ok(maxedByTunedInWork);
+    }
+
 }

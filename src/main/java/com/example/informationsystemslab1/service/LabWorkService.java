@@ -119,4 +119,16 @@ public class LabWorkService {
         labWorkRepository.delete(labWork);
     }
 
+
+    //обработка специальных операций
+
+    public LabWorkResponseDto findMaxedByTunedInWork() {
+        Optional<LabWork> optionalMaxedByTunedInWork = labWorkRepository.findFirstByOrderByTunedInWorkDesc();
+
+        if (optionalMaxedByTunedInWork.isEmpty()) {
+            throw new EntityNotFoundException(LabWork.class);
+        }
+
+        return labWorkMapper.toDto(optionalMaxedByTunedInWork.get());
+    }
 }

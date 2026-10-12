@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface LabWorkRepository extends JpaRepository<LabWork, Long> {
 
@@ -22,4 +24,6 @@ public interface LabWorkRepository extends JpaRepository<LabWork, Long> {
                     "AND (:description IS NULL OR l.description = :description)"
     )
     Page<LabWork> findAllFiltered(@Param("name") String name, @Param("description") String description, Pageable pageable);
+
+    Optional<LabWork> findFirstByOrderByTunedInWorkDesc();
 }
