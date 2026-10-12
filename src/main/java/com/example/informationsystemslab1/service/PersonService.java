@@ -1,20 +1,20 @@
 package com.example.informationsystemslab1.service;
 
-import com.example.informationsystemslab1.dto.request.CreatePersonDto;
-import com.example.informationsystemslab1.dto.request.UpdatePersonDto;
+import com.example.informationsystemslab1.dto.request.create.CreatePersonDto;
+import com.example.informationsystemslab1.dto.request.update.UpdatePersonDto;
 import com.example.informationsystemslab1.dto.response.PersonResponseDto;
 import com.example.informationsystemslab1.entity.Location;
 import com.example.informationsystemslab1.entity.Person;
+import com.example.informationsystemslab1.exception.custom.EntityNotFoundException;
 import com.example.informationsystemslab1.mapper.PersonMapper;
 import com.example.informationsystemslab1.repository.PersonRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class PersonService {
@@ -57,7 +57,7 @@ public class PersonService {
         Optional<Person> optionalPerson = personRepository.findById(id);
 
         if (optionalPerson.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Person with id " + id + " not found");
+            throw new EntityNotFoundException(Person.class, id);
         }
 
         return optionalPerson.get();
@@ -79,7 +79,7 @@ public class PersonService {
 
     public void delete(Long id) {
         if (!personRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Person with id " + id + " not found");
+            throw new EntityNotFoundException(Person.class, id);
         }
 
         personRepository.deleteById(id);
@@ -93,7 +93,11 @@ public class PersonService {
         List<Person> foundPeople = personRepository.findAllById(ids);
 
         if (foundPeople.size() != ids.size()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Some authors were not found");
+            Set<Long> foundIds = foundPeople.stream().map(Person::getId).collect(Collectors.toSet());
+            Set<Long> missingIds = new HashSet<>(ids);
+            missingIds.removeAll(foundIds);
+
+            throw new EntityNotFoundException(Person.class, missingIds);
         }
 
         return new HashSet<>(foundPeople);

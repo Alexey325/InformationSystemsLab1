@@ -1,17 +1,16 @@
 package com.example.informationsystemslab1.service;
 
-import com.example.informationsystemslab1.dto.request.CreateLabWorkDto;
-import com.example.informationsystemslab1.dto.request.UpdateLabWorkDto;
+import com.example.informationsystemslab1.dto.request.create.CreateLabWorkDto;
+import com.example.informationsystemslab1.dto.request.update.UpdateLabWorkDto;
 import com.example.informationsystemslab1.dto.response.LabWorkResponseDto;
 import com.example.informationsystemslab1.entity.Coordinates;
 import com.example.informationsystemslab1.entity.Discipline;
 import com.example.informationsystemslab1.entity.LabWork;
+import com.example.informationsystemslab1.exception.custom.EntityNotFoundException;
 import com.example.informationsystemslab1.mapper.LabWorkMapper;
 import com.example.informationsystemslab1.repository.LabWorkRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -76,7 +75,7 @@ public class LabWorkService {
         Optional<LabWork> optionalLabWork = labWorkRepository.findById(id);
 
         if (optionalLabWork.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "LabWork with id " + id + " not found");
+            throw new EntityNotFoundException(LabWork.class, id);
         }
 
         return optionalLabWork.get();

@@ -1,14 +1,13 @@
 package com.example.informationsystemslab1.service;
 
-import com.example.informationsystemslab1.dto.request.CreateDisciplineDto;
-import com.example.informationsystemslab1.dto.request.UpdateDisciplineDto;
+import com.example.informationsystemslab1.dto.request.create.CreateDisciplineDto;
+import com.example.informationsystemslab1.dto.request.update.UpdateDisciplineDto;
 import com.example.informationsystemslab1.dto.response.DisciplineResponseDto;
 import com.example.informationsystemslab1.entity.Discipline;
+import com.example.informationsystemslab1.exception.custom.EntityNotFoundException;
 import com.example.informationsystemslab1.mapper.DisciplineMapper;
 import com.example.informationsystemslab1.repository.DisciplineRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +45,7 @@ public class DisciplineService {
         Optional<Discipline> optionalDiscipline = disciplineRepository.findById(id);
 
         if (optionalDiscipline.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Discipline with id " + id + " not found");
+            throw new EntityNotFoundException(Discipline.class, id);
         }
 
         return optionalDiscipline.get();
@@ -62,7 +61,7 @@ public class DisciplineService {
 
     public void delete(Long id) {
         if (!disciplineRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Discipline with id " + id + " not found");
+            throw new EntityNotFoundException(Discipline.class, id);
         }
 
         disciplineRepository.deleteById(id);

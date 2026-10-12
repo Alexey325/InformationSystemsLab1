@@ -1,4 +1,4 @@
-package com.example.informationsystemslab1.dto.request;
+package com.example.informationsystemslab1.dto.request.create;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;

@@ -1,4 +1,4 @@
-package com.example.informationsystemslab1.dto.request;
+package com.example.informationsystemslab1.dto.request.create;
 
 import com.example.informationsystemslab1.dto.CoordinatesDto;
 import com.example.informationsystemslab1.enums.Difficulty;
@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Positive;
 
 import java.util.Set;
 
-public record UpdateLabWorkDto(
+public record CreateLabWorkDto(
         @NotBlank String name,
         @NotNull @Valid CoordinatesDto coordinates,
         @NotBlank String description,

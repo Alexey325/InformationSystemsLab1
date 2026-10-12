@@ -1,7 +1,7 @@
 package com.example.informationsystemslab1.controller;
 
-import com.example.informationsystemslab1.dto.request.CreateDisciplineDto;
-import com.example.informationsystemslab1.dto.request.UpdateDisciplineDto;
+import com.example.informationsystemslab1.dto.request.create.CreateDisciplineDto;
+import com.example.informationsystemslab1.dto.request.update.UpdateDisciplineDto;
 import com.example.informationsystemslab1.dto.response.DisciplineResponseDto;
 import com.example.informationsystemslab1.service.DisciplineService;
 import jakarta.validation.Valid;

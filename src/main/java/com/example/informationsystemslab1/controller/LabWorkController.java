@@ -1,7 +1,7 @@
 package com.example.informationsystemslab1.controller;
 
-import com.example.informationsystemslab1.dto.request.CreateLabWorkDto;
-import com.example.informationsystemslab1.dto.request.UpdateLabWorkDto;
+import com.example.informationsystemslab1.dto.request.create.CreateLabWorkDto;
+import com.example.informationsystemslab1.dto.request.update.UpdateLabWorkDto;
 import com.example.informationsystemslab1.dto.response.LabWorkResponseDto;
 import com.example.informationsystemslab1.service.LabWorkService;
 import jakarta.validation.Valid;

@@ -1,7 +1,7 @@
 package com.example.informationsystemslab1.controller;
 
-import com.example.informationsystemslab1.dto.request.CreateLocationDto;
-import com.example.informationsystemslab1.dto.request.UpdateLocationDto;
+import com.example.informationsystemslab1.dto.request.create.CreateLocationDto;
+import com.example.informationsystemslab1.dto.request.update.UpdateLocationDto;
 import com.example.informationsystemslab1.dto.response.LocationResponseDto;
 import com.example.informationsystemslab1.service.LocationService;
 import jakarta.validation.Valid;

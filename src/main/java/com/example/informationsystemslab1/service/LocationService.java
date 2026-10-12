@@ -1,14 +1,13 @@
 package com.example.informationsystemslab1.service;
 
-import com.example.informationsystemslab1.dto.request.CreateLocationDto;
-import com.example.informationsystemslab1.dto.request.UpdateLocationDto;
+import com.example.informationsystemslab1.dto.request.create.CreateLocationDto;
+import com.example.informationsystemslab1.dto.request.update.UpdateLocationDto;
 import com.example.informationsystemslab1.dto.response.LocationResponseDto;
 import com.example.informationsystemslab1.entity.Location;
+import com.example.informationsystemslab1.exception.custom.EntityNotFoundException;
 import com.example.informationsystemslab1.mapper.LocationMapper;
 import com.example.informationsystemslab1.repository.LocationRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,7 +47,7 @@ public class LocationService {
         Optional<Location> optionalLocation = locationRepository.findById(id);
 
         if (optionalLocation.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Location with id " + id + " not found");
+            throw new EntityNotFoundException(Location.class, id);
         }
 
         return optionalLocation.get();
@@ -67,7 +66,7 @@ public class LocationService {
 
     public void delete(Long id) {
         if (!locationRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Location with id " + id + " not found");
+            throw new EntityNotFoundException(Location.class, id);
         }
 
         locationRepository.deleteById(id);
