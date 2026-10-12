@@ -9,6 +9,8 @@ import com.example.informationsystemslab1.entity.LabWork;
 import com.example.informationsystemslab1.exception.custom.EntityNotFoundException;
 import com.example.informationsystemslab1.mapper.LabWorkMapper;
 import com.example.informationsystemslab1.repository.LabWorkRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,10 +63,9 @@ public class LabWorkService {
         return labWorkMapper.toDto(labWorkRepository.save(labWork));
     }
 
-    public List<LabWorkResponseDto> findAll() {
-        return labWorkRepository.findAll().stream()
-                .map(labWorkMapper::toDto)
-                .toList();
+    public Page<LabWorkResponseDto> findAll(String name, String description, Pageable pageable) {
+        return labWorkRepository.findAllFiltered(name, description, pageable)
+                .map(labWorkMapper::toDto);
     }
 
     public LabWorkResponseDto findById(Long id) {

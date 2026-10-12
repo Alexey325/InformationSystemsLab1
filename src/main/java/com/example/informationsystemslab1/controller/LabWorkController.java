@@ -5,11 +5,11 @@ import com.example.informationsystemslab1.dto.request.update.UpdateLabWorkDto;
 import com.example.informationsystemslab1.dto.response.LabWorkResponseDto;
 import com.example.informationsystemslab1.service.LabWorkService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/labworks")
@@ -28,8 +28,12 @@ public class LabWorkController {
     }
 
     @GetMapping
-    public ResponseEntity<List<LabWorkResponseDto>> getAllLabWorks() {
-        return ResponseEntity.ok(labWorkService.findAll());
+    public ResponseEntity<Page<LabWorkResponseDto>> getAllLabWorks(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String description,
+            Pageable pageable
+    ) {
+        return ResponseEntity.ok(labWorkService.findAll(name, description, pageable));
     }
 
     @GetMapping("/{id}")

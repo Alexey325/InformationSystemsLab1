@@ -2,6 +2,7 @@ package com.example.informationsystemslab1.exception.handler;
 
 import com.example.informationsystemslab1.exception.custom.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,6 +37,15 @@ public class GlobalExceptionHandler {
                 .toList();
 
         return buildValidationProblemDetail(violations);
+    }
+
+    //для ошибок с кривыми запросами pageble
+    @ExceptionHandler(InvalidDataAccessApiUsageException.class)
+    public ProblemDetail handleInvalidDataAccessApiUsage(InvalidDataAccessApiUsageException ex) {
+        //из ex текст ошибки не вытаскиваем, возвращает gpql и клиенту не нужен, поэтому просто строка дублирующая title
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Invalid query parameter");
+        problemDetail.setTitle("Invalid request parameters");
+        return problemDetail;
     }
 
     private ProblemDetail buildValidationProblemDetail(List<FieldErrorDto> errors) {
