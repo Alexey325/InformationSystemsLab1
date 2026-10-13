@@ -16,7 +16,7 @@ public class JpaConfig {
         adapter.setGenerateDdl(true);
 
         // логирование сгенерированных SQL-запросов в консоль
-        adapter.setShowSql(true);
+        // adapter.setShowSql(true);
 
         return adapter;
     }
