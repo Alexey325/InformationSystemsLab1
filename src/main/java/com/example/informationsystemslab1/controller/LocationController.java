@@ -1,6 +1,5 @@
 package com.example.informationsystemslab1.controller;
 
-import com.example.informationsystemslab1.access.BlockDirectAccess;
 import com.example.informationsystemslab1.dto.request.create.CreateLocationDto;
 import com.example.informationsystemslab1.dto.request.update.UpdateLocationDto;
 import com.example.informationsystemslab1.dto.response.LocationResponseDto;
@@ -33,7 +32,6 @@ public class LocationController {
         return ResponseEntity.ok(locationService.findAll());
     }
 
-    @BlockDirectAccess
     @GetMapping("/{id}")
     public ResponseEntity<LocationResponseDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(locationService.findById(id));

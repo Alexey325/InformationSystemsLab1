@@ -1,6 +1,5 @@
 package com.example.informationsystemslab1.controller;
 
-import com.example.informationsystemslab1.access.BlockDirectAccess;
 import com.example.informationsystemslab1.dto.request.create.CreateDisciplineDto;
 import com.example.informationsystemslab1.dto.request.update.UpdateDisciplineDto;
 import com.example.informationsystemslab1.dto.response.DisciplineResponseDto;
@@ -33,7 +32,6 @@ public class DisciplineController {
         return ResponseEntity.ok(disciplineService.findAll());
     }
 
-    @BlockDirectAccess
     @GetMapping("/{id}")
     public ResponseEntity<DisciplineResponseDto> getById(@PathVariable Long id) {
         return ResponseEntity.ok(disciplineService.findById(id));

@@ -1,6 +1,5 @@
 package com.example.informationsystemslab1.exception.handler;
 
-import com.example.informationsystemslab1.exception.custom.DirectAccessDeniedException;
 import com.example.informationsystemslab1.exception.custom.EntityInUseException;
 import com.example.informationsystemslab1.exception.custom.EntityNotFoundException;
 import jakarta.validation.ConstraintViolationException;
@@ -45,13 +44,6 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleEntityInUse(EntityInUseException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
         problemDetail.setTitle("Entity still referenced");
-        return problemDetail;
-    }
-
-    @ExceptionHandler(DirectAccessDeniedException.class)
-    public ProblemDetail handleDirectAccessDenied(DirectAccessDeniedException ex) {
-        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
-        problemDetail.setTitle("Access denied");
         return problemDetail;
     }
 
