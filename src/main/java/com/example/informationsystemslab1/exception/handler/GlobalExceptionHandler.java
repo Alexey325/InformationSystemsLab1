@@ -2,8 +2,10 @@ package com.example.informationsystemslab1.exception.handler;
 
 import com.example.informationsystemslab1.exception.custom.EntityInUseException;
 import com.example.informationsystemslab1.exception.custom.EntityNotFoundException;
+import com.example.informationsystemslab1.exception.custom.UsernameAlreadyExistsException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -44,6 +46,20 @@ public class GlobalExceptionHandler {
     public ProblemDetail handleEntityInUse(EntityInUseException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
         problemDetail.setTitle("Entity still referenced");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(UsernameAlreadyExistsException.class)
+    public ProblemDetail handleUsernameAlreadyExists(UsernameAlreadyExistsException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problemDetail.setTitle("Username already exists");
+        return problemDetail;
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ProblemDetail handleBadCredentials(BadCredentialsException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, "Invalid username or password");
+        problemDetail.setTitle("Authentication failed");
         return problemDetail;
     }
 
