@@ -1,10 +1,11 @@
 package com.example.informationsystemslab1.dto.request.auth;
 
+import com.example.informationsystemslab1.validation.MaxBytes;
 import jakarta.validation.constraints.NotBlank;
 
 public record RegisterRequestDto(
         @NotBlank String username,
-        // TODO: ограничение BCrypt — пароль не длиннее 72 БАЙТ в UTF-8 (@Size считает символы, а не байты)
-        @NotBlank String password
+        // BCrypt принимает не больше 72 байт(кириллица 2 байта на символ)
+        @NotBlank @MaxBytes(max = 72) String password
 ) {
 }
