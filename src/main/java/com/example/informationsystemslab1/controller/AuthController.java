@@ -3,6 +3,7 @@ package com.example.informationsystemslab1.controller;
 import com.example.informationsystemslab1.dto.request.auth.LoginRequestDto;
 import com.example.informationsystemslab1.dto.request.auth.RegisterRequestDto;
 import com.example.informationsystemslab1.dto.response.UserResponseDto;
+import com.example.informationsystemslab1.enums.Role;
 import com.example.informationsystemslab1.service.ApplicationUserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -12,14 +13,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -60,5 +60,17 @@ public class AuthController {
         securityContextRepository.saveContext(context, request, response);
 
         return ResponseEntity.ok(userService.getByUsername(authentication.getName()));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponseDto> me(@AuthenticationPrincipal UserDetails principal) {
+        UserResponseDto userFromDatabase = userService.getByUsername(principal.getUsername());
+
+        String authority = principal.getAuthorities().iterator().next().getAuthority(); //формат "ROLE_USER"
+        Role roleFromSession = Role.valueOf(authority.substring("ROLE_".length()));
+
+        return ResponseEntity.ok(
+                new UserResponseDto(userFromDatabase.id(), userFromDatabase.username(), roleFromSession)
+        );
     }
 }
